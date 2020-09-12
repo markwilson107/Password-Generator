@@ -1,21 +1,24 @@
-// Assignment Code
+//Assignment Code
 //Variables
 var generateBtn = document.querySelector("#generate");
 var passLength = "";
 var charType = "";
 var charTypeArray = ["l", "u", "n", "s"];
 var charSet = "";
+var charSetInit = "";
 var passwordValue = "";
 
-// Write password to the #password input
+//Write password to the #password input
 function writePassword() {
   var password = generatePassword();
   var passwordText = document.querySelector("#password");
-  passwordText.value = password;
-
+  passwordText.textContent = password;
 }
 
-//Generate Password
+//Add event listener to generate button
+generateBtn.addEventListener("click", writePassword);
+
+//Generate Password Function
 function generatePassword() {
 
   //prompt user for password length
@@ -31,7 +34,7 @@ function generatePassword() {
   }
 
   //prompt user for character type(s)
-  charType = prompt("What character types would you like?\nlowercase(l), uppercase(u), numeric(n), and/or special(s)\nList as many letters as you like.");
+  charType = prompt("What character type(s) would you like?\nlowercase(l), uppercase(u), numeric(n), and/or special(s)\nList as many letters as you like.");
   //converts string to lowercase
   if (charType != null) {
     charType = charType.toLowerCase();
@@ -39,7 +42,7 @@ function generatePassword() {
   //repeat prompt until correct criteria is met or cancel is pressed
   while (charType != null && !charTypeArray.some(v => charType.includes(v))) {
     //prompt user for character type(s)
-    charType = prompt("What character types would you like?\nlowercase(l), uppercase(u), numeric(n), and/or special(s)\nPlease enter valid character types.");
+    charType = prompt("What character type(s) would you like?\nlowercase(l), uppercase(u), numeric(n), and/or special(s)\nPlease enter valid character types.");
     //converts string to lowercase
     if (charType != null) {
       charType = charType.toLowerCase();
@@ -51,40 +54,57 @@ function generatePassword() {
   }
 
   //create character set for password generation
-  //clear any previous value
+  //clear any previous values
   charSet = "";
+  passwordValue = "";
   //checks if user selected "lowercase"
   if (charType.includes(charTypeArray[0])) {
     //adds lowercase characters to character set
-    charSet += "abcdefghijklmnopqrstuvwxyz";
+    charSetInit = "abcdefghijklmnopqrstuvwxyz";
+    charSet += charSetInit;
+    //adds 1 random lowercase character to password
+    passwordValue += charSetInit.charAt(Math.floor(Math.random() * charSetInit.length));
+    //reduces length by 1
+    passLength--;
   }
   //checks if user selected "uppercase"
   if (charType.includes(charTypeArray[1])) {
     //adds uppercase characters to character set
-    charSet += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    charSetInit = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    charSet += charSetInit;
+    //adds 1 random uppercase character to password
+    passwordValue += charSetInit.charAt(Math.floor(Math.random() * charSetInit.length));
+    //reduces length by 1
+    passLength--;
   }
   //checks if user selected "numeric"
   if (charType.includes(charTypeArray[2])) {
     //adds numbers to character set
-    charSet += "0123456789";
+    charSetInit = "0123456789";
+    charSet += charSetInit;
+    //adds 1 random numeric character to password
+    passwordValue += charSetInit.charAt(Math.floor(Math.random() * charSetInit.length));
+    //reduces length by 1
+    passLength--;
   }
   //checks if user selected "special"
   if (charType.includes(charTypeArray[3])) {
     //adds numbers to character set
-    charSet += "!@#$+-*&_";
+    charSetInit = "!@#$+-*&_";
+    charSet += charSetInit;
+    //adds 1 random special character to password
+    passwordValue += charSetInit.charAt(Math.floor(Math.random() * charSetInit.length));
+    //reduces length by 1
+    passLength--;
   }
-
+  console.log(passwordValue)
   //generate password
-  //clear any previous value
-  passwordValue = "";
   //loops through password length 
   for (var i = 0, n = charSet.length; i < passLength; ++i) {
     //adds random characters from charSet
     passwordValue += charSet.charAt(Math.floor(Math.random() * n));
   }
-  //returns the final password
-  return passwordValue;
-}
+  //returns shuffled final password
+  return passwordValue.split('').sort(function () { return 0.5 - Math.random() }).join('');
 
-// Add event listener to generate button
-generateBtn.addEventListener("click", writePassword);
+}
